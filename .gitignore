@@ -1,0 +1,10 @@
+#ignore directories
+_prn/
+obj/
+
+#ignore files
+*.bin
+*.map
+*_.c
+*.abs
+*.HEX
