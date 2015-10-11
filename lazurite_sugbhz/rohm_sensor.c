@@ -54,20 +54,27 @@ void setup(void)
 	// Reset Graph tool
 	Print.init(tx_data,sizeof(tx_data));
 	Print.p("SensorReset");
+	digitalWrite(BLUE_LED, LOW);
 	SubGHz.send(SUBGHZ_PANID,SUBGHZ_GATEWAY,tx_data,Print.len(),NULL);
+	digitalWrite(BLUE_LED, HIGH);
 	Serial.print(tx_data);
 	sleep(10);
 	
 	// Set Sensor
 	Print.init(tx_data,sizeof(tx_data));
 	Print.p("SensorList,RPR0521-ALS,1,RPR0521-PS,1,BM1423-MAG,3,BM1383-T,1,BM1383-P,1,KXG03-G,3,KXG03-A,3,ML8511-UV,1,");
+	digitalWrite(BLUE_LED, LOW);
 	SubGHz.send(SUBGHZ_PANID,SUBGHZ_GATEWAY,tx_data,Print.len(),NULL);
-	Serial.print(tx_data);
+	digitalWrite(BLUE_LED, HIGH);
+	digitalWrite(ORANGE_LED,LOW);
+//	Serial.print(tx_data);
+	digitalWrite(ORANGE_LED,HIGH);
 	SubGHz.close();
 }
 
 void loop(void)
 {
+	SUBGHZ_MSG msg;
 	float fval[6];
 	unsigned short usval[1];
 	
@@ -119,11 +126,15 @@ void loop(void)
 	
 	// send subghz
 	SubGHz.begin(SUBGHZ_CH,SUBGHZ_PANID,SUBGHZ_BITRATE,SUBGHZ_PWR);
-	SubGHz.send(SUBGHZ_PANID,SUBGHZ_GATEWAY,tx_data,Print.len(),NULL);
+	digitalWrite(BLUE_LED, LOW);
+	msg=SubGHz.send(SUBGHZ_PANID,SUBGHZ_GATEWAY,tx_data,Print.len(),NULL);
+	digitalWrite(BLUE_LED, HIGH);
 	SubGHz.close();
 	
 	// Send Serial
+	digitalWrite(ORANGE_LED,LOW);
 	Serial.print(tx_data);
+	digitalWrite(ORANGE_LED,HIGH);
 	Serial.println("");
 	delay(100);
 }
