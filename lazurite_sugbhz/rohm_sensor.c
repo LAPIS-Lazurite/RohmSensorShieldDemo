@@ -23,13 +23,17 @@
  * THE SOFTWARE.
 */
 
-#define SUBGHZ_CH			26
+#define SUBGHZ_CH			36
 #define SUBGHZ_PANID		0xABCD
-#define SUBGHZ_GATEWAY		0x8E43
+#define SUBGHZ_GATEWAY		0xAC8E
 #define SUBGHZ_BITRATE		SUBGHZ_100KBPS
-#define SUBGHZ_PWR			SUBGHZ_PWR_20MW
+#define SUBGHZ_PWR			SUBGHZ_PWR_1MW
 
 
+#define BLUE_LED			26
+#define ORANGE_LED			25
+
+#define DEBUG
 
 unsigned char tx_data[128];
 
@@ -40,6 +44,10 @@ void setup(void)
 	Serial.begin(115200);
 	SubGHz.init();
 	Wire.begin();
+	
+	pinMode(BLUE_LED,OUTPUT);
+	pinMode(ORANGE_LED,OUTPUT);
+	
 	
 	// initializing sensor
 	rpr0521rs.init();
@@ -127,7 +135,20 @@ void loop(void)
 	// send subghz
 	SubGHz.begin(SUBGHZ_CH,SUBGHZ_PANID,SUBGHZ_BITRATE,SUBGHZ_PWR);
 	digitalWrite(BLUE_LED, LOW);
+	#ifdef DEBUG
+	Serial.print("START SENDING\t");
+	Serial.print_long(millis(),DEC);
+	Serial.println("");
+	#endif
 	msg=SubGHz.send(SUBGHZ_PANID,SUBGHZ_GATEWAY,tx_data,Print.len(),NULL);
+	Serial.print("msg=");
+	Serial.print_long(msg,DEC);
+	Serial.print("\r\n");	
+	#ifdef DEBUG
+	Serial.print("END SENDING\t");
+	Serial.print_long(millis(),DEC);
+	Serial.println("");
+	#endif
 	digitalWrite(BLUE_LED, HIGH);
 	SubGHz.close();
 	
@@ -136,6 +157,16 @@ void loop(void)
 	Serial.print(tx_data);
 	digitalWrite(ORANGE_LED,HIGH);
 	Serial.println("");
-	delay(100);
+	#ifdef DEBUG
+	Serial.print("BEFORE DELAY\t");
+	Serial.print_long(millis(),DEC);
+	Serial.println("");
+	#endif
+	sleep(100);
+	#ifdef DEBUG
+	Serial.print("END DELAY\t");
+	Serial.print_long(millis(),DEC);
+	Serial.println("");
+	#endif
 }
 
