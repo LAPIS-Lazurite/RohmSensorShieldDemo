@@ -34,16 +34,16 @@ sudo pip install six python-dateutil pyparsing
 
 ## matplotlibのインストールとそのためのスワップメモリ作成
 ### スワップメモリを作成
-'''
-# create swap file of 512 MB
-sudo dd if=/dev/zero of=/swapfile bs=1024 count=524288
-# modify permissions
-sudo chown root:root /swapfile
-sudo chmod 0600 /swapfile
-# setup swap area
-sudo mkswap /swapfile
-# turn swap on
-sudo swapon /swapfile
-'''
+
+' # create swap file of 512 MB
+' sudo dd if=/dev/zero of=/swapfile bs=1024 count=524288
+' # modify permissions
+' sudo chown root:root /swapfile
+' sudo chmod 0600 /swapfile
+' # setup swap area
+' sudo mkswap /swapfile
+' # turn swap on
+' sudo swapon /swapfile
+
 ### matplotlibのインストール
 sudo pip install matplotlib
